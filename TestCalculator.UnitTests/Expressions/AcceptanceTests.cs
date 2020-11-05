@@ -1,7 +1,4 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TextCalculator.Expressions;
 using Xunit;
 
@@ -15,7 +12,7 @@ namespace TextCalculator.UnitTests.Expressions
             // 2 + 4 = 6
 
             new AdditionOperator(
-                new NumberLiteral(2), 
+                new NumberLiteral(2),
                 new NumberLiteral(4))
                 .Result.Should().Be(6);
         }
