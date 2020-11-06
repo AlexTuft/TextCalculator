@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using System;
 
 namespace TextCalculator.UnitTests
 {
@@ -8,8 +9,9 @@ namespace TextCalculator.UnitTests
 
         protected FixtureBase()
         {
-            var numberGenerator = new RandomNumericSequenceGenerator(-10000, 10000);
-            fixture.Register(numberGenerator.Create<int>);
+            var random = new Random();
+            fixture.Register(() => random.Next(-10000, 10000));
+            fixture.Register(() => fixture.Create<int>() * random.NextDouble());
         }
 
         protected TObj Create<TObj>() => fixture.Create<TObj>();
