@@ -1,16 +1,17 @@
 ﻿namespace TextCalculator.Expressions
 {
-    public class MultiplicationOperator : IExpression
+    public class MultiplicationOperator : IExpression, IBinaryOperator
     {
-        private IExpression _lhs;
-        private IExpression _rhs;
-
-        public MultiplicationOperator(IExpression lhs, IExpression rhs)
+        public MultiplicationOperator(IExpression leftExpression, IExpression rightExpression)
         {
-            _lhs = lhs;
-            _rhs = rhs;
+            LeftExpression = leftExpression;
+            RightExpression = rightExpression;
         }
 
-        public double Result => _lhs.Result * _rhs.Result;
+        public double Result => LeftExpression.Result * RightExpression.Result;
+
+        public IExpression LeftExpression { get; }
+
+        public IExpression RightExpression { get; }
     }
 }

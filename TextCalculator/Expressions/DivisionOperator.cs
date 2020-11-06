@@ -1,16 +1,17 @@
 ﻿namespace TextCalculator.Expressions
 {
-    public class DivisionOperator : IExpression
+    public class DivisionOperator : IExpression, IBinaryOperator
     {
-        private IExpression _lhs;
-        private IExpression _rhs;
-
-        public DivisionOperator(IExpression lhs, IExpression rhs)
+        public DivisionOperator(IExpression leftExpression, IExpression rightExpression)
         {
-            _lhs = lhs;
-            _rhs = rhs;
+            LeftExpression = leftExpression;
+            RightExpression = rightExpression;
         }
 
-        public double Result => _lhs.Result / _rhs.Result;
+        public double Result => LeftExpression.Result / RightExpression.Result;
+
+        public IExpression LeftExpression { get; }
+
+        public IExpression RightExpression { get; }
     }
 }
