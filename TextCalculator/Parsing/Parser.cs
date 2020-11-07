@@ -8,7 +8,21 @@ namespace TextCalculator.Parsing
         public IExpression? Parse(string inputText)
         {
             var input = new InputReader(inputText);
-            return TryParseNumberLiteral(input);
+            return TryParseAddition(input);
+        }
+
+        private IExpression? TryParseAddition(InputReader input)
+        {
+            var left = TryParseNumberLiteral(input);
+
+            while (input.NextIs('+'))
+            {
+                input.Next();
+                var right = TryParseNumberLiteral(input);
+                left = new AdditionOperator(left, right);
+            }
+
+            return left;
         }
 
         private IExpression? TryParseNumberLiteral(InputReader input)

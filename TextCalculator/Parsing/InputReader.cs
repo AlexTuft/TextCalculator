@@ -19,7 +19,7 @@ namespace TextCalculator.Parsing
         {
             return (Index) < Text.Length;
         }
-        
+
         internal char PeekNext()
         {
             return Text[Index];
@@ -35,6 +35,7 @@ namespace TextCalculator.Parsing
     {
         internal static bool NextIs(this InputReader input, params char[] anyOf)
         {
+            input.SkipWhiteSpace();
             return input.HasNext() && anyOf.Contains(input.PeekNext());
         }
 
