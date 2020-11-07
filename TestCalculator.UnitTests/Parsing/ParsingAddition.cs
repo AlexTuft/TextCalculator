@@ -14,7 +14,7 @@ namespace TextCalculator.UnitTests.Parsing
 
             var expression = parser.Parse(input);
 
-            expression.ShouldBeAdditionOperator(new NumberLiteral(1), new NumberLiteral(2));
+            expression.ShouldBeBinaryOperator<AdditionOperator>(new NumberLiteral(1), new NumberLiteral(2));
         }
 
         [Theory]
@@ -25,7 +25,7 @@ namespace TextCalculator.UnitTests.Parsing
 
             var expression = parser.Parse(input);
 
-            expression.ShouldBeAdditionOperator(
+            expression.ShouldBeBinaryOperator<AdditionOperator>(
                 new AdditionOperator(
                     new NumberLiteral(1),
                     new NumberLiteral(2)),

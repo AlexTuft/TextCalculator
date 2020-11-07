@@ -11,11 +11,11 @@ namespace TextCalculator.UnitTests.Parsing
             o.As<NumberLiteral>().Result.Should().Be(value);
         }
 
-        internal static void ShouldBeAdditionOperator(this object? o, IExpression left, IExpression right)
+        internal static void ShouldBeBinaryOperator<TOperator>(this object? o, IExpression left, IExpression right) where TOperator : IBinaryOperator
         {
-            o.Should().BeOfType<AdditionOperator>();
+            o.Should().BeOfType<TOperator>();
 
-            if (o is AdditionOperator a)
+            if (o is TOperator a)
             {
                 // Assert that expressions are correct type
                 a.LeftExpression.Should().BeOfType(left.GetType());
