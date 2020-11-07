@@ -15,26 +15,13 @@ namespace TextCalculator.Parsing
         {
             string token = "";
 
-            bool parsingFraction = false;
-            while (input.HasNext())
+            token += input.TakeIf('-', '+');
+            token += input.TakeWhile(char.IsDigit);
+
+            if (input.NextIs('.'))
             {
-                char c = input.Next();
-                if (c == '.')
-                {
-                    if (!parsingFraction)
-                    {
-                        parsingFraction = true;
-                        token += c;
-                    }
-                    else
-                    {
-                        throw new BadInputFormat(input.Text, input.Index);
-                    }
-                }
-                else if (char.IsDigit(c) || c == '-')
-                {
-                    token += c;
-                }
+                token += input.TakeIf('.');
+                token += input.TakeWhile(char.IsDigit);
             }
 
             if (!string.IsNullOrEmpty(token))
