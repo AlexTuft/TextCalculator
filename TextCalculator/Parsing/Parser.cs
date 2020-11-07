@@ -5,14 +5,16 @@ namespace TextCalculator.Parsing
 {
     public class Parser
     {
-        public IExpression? Parse(string input)
+        public IExpression? Parse(string inputText)
         {
+            var input = new InputReader(inputText);
+
             string token = "";
 
             bool parsingFraction = false;
-            for (int i = 0; i < input.Length; i++)
+            while (input.HasNext())
             {
-                char c = input[i];
+                char c = input.Next();
                 if (c == '.')
                 {
                     if (!parsingFraction)
@@ -22,7 +24,7 @@ namespace TextCalculator.Parsing
                     }
                     else
                     {
-                        throw new BadInputFormat(input, i);
+                        throw new BadInputFormat(input.Text, input.Index);
                     }
                 }
                 else if (char.IsDigit(c) || c == '-')
