@@ -4,12 +4,12 @@ using Xunit;
 
 namespace TextCalculator.UnitTests.Expressions
 {
-    public class Number : FixtureBase
+    public class EvaluatingNumberLiteral : FixtureBase
     {
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
-        void ShouldReturnInputNumberAsResult(int input)
+        void ShouldReturnInputNumber(int input)
         {
             var number = new NumberLiteral(input);
 
@@ -18,7 +18,7 @@ namespace TextCalculator.UnitTests.Expressions
 
         [Theory]
         [InlineData(-1)]
-        void CanBeNegativeNumbers(int input)
+        void ShouldHandleNegativeNumbers(int input)
         {
             var number = new NumberLiteral(input);
 
@@ -28,7 +28,7 @@ namespace TextCalculator.UnitTests.Expressions
         [Theory]
         [InlineData(1.0)]
         [InlineData(-1.0)]
-        void CanBeDecimalNumbers(double input)
+        void ShouldHandleDecimalNumbers(double input)
         {
             var number = new NumberLiteral(input);
 

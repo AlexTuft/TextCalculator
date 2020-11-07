@@ -4,16 +4,16 @@ using Xunit;
 
 namespace TextCalculator.UnitTests.Expressions
 {
-    public class Multiplication : FixtureBase
+    public class EvaluatingDivisionOperator : FixtureBase
     {
         [Fact]
-        void ShouldReturnProductOfTwoExpressions()
+        void ShouldReturnQuotientOfTwoExpressions()
         {
             var expression1 = Create<NumberLiteral>();
             var expression2 = Create<NumberLiteral>();
-            var expectedResult = expression1.Result * expression2.Result;
+            var expectedResult = expression1.Result / expression2.Result;
 
-            var addition = new MultiplicationOperator(expression1, expression2);
+            var addition = new DivisionOperator(expression1, expression2);
 
             addition.Result.Should().Be(expectedResult);
         }

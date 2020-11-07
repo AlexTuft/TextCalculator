@@ -4,7 +4,7 @@ using Xunit;
 
 namespace TextCalculator.UnitTests.Expressions
 {
-    public class Addition : FixtureBase
+    public class EvaluatingAdditionOperator : FixtureBase
     {
         [Fact]
         void ShouldReturnSumOfTwoExpressions()
