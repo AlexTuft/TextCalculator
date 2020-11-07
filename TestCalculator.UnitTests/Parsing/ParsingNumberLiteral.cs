@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using TextCalculator.Parsing;
 using Xunit;
@@ -44,6 +44,20 @@ namespace TextCalculator.UnitTests.Parsing
             Action action = () => parser.Parse(input);
 
             action.Should().Throw<Parser.BadInputFormat>();
+        }
+
+        [Theory]
+        [InlineData("-1")]
+        [InlineData("+1")]
+        [InlineData("-1.2")]
+        [InlineData("+1.2")]
+        void ShouldParseSignSymbol(string input)
+        {
+            var parser = new Parser();
+
+            var expression = parser.Parse(input);
+
+            expression.ShouldBeNumberLiteral(double.Parse(input));
         }
     }
 }

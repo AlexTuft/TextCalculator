@@ -25,7 +25,7 @@ namespace TextCalculator.Parsing
                         throw new BadInputFormat(input, i);
                     }
                 }
-                else if (char.IsDigit(c))
+                else if (char.IsDigit(c) || c == '-')
                 {
                     token += c;
                 }
