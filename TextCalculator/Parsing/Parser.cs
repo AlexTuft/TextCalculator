@@ -8,7 +8,11 @@ namespace TextCalculator.Parsing
         public IExpression? Parse(string inputText)
         {
             var input = new InputReader(inputText);
+            return TryParseNumberLiteral(input);
+        }
 
+        private IExpression? TryParseNumberLiteral(InputReader input)
+        {
             string token = "";
 
             bool parsingFraction = false;
