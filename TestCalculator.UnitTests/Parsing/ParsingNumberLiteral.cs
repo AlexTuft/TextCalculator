@@ -43,7 +43,7 @@ namespace TextCalculator.UnitTests.Parsing
 
             Action action = () => parser.Parse(input);
 
-            action.Should().Throw<Parser.BadInputFormat>();
+            action.Should().Throw<BadInputFormat>();
         }
 
         [Theory]
