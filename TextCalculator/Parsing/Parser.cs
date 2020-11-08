@@ -29,16 +29,25 @@ namespace TextCalculator.Parsing
                 return null;
             }
 
-            var input = new InputReader(inputText);
+            return ParseInput(inputText);
+        }
 
+        private IExpression? ParseInput(string inputText)
+        {
+            var input = new InputReader(inputText);
             var expression = _parser.Parse(input);
 
+            GuardHasParsedWholeInput(input);
+
+            return expression;
+        }
+
+        private static void GuardHasParsedWholeInput(InputReader input)
+        {
             if (input.HasNext())
             {
                 throw new BadInputFormat(input.Text, input.Index);
             }
-
-            return expression;
-        }       
+        }
     }
 }
