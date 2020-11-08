@@ -7,18 +7,41 @@ namespace TextCalculator.Parsing
     {
         public IExpression? Parse(string inputText)
         {
+            if (string.IsNullOrWhiteSpace(inputText))
+            {
+                return null;
+            }
+
             var input = new InputReader(inputText);
-            return TryParseAdditionAndSubtraction(input);
+            
+            var expression = TryParseAdditionAndSubtraction(input);
+
+            if (input.HasNext())
+            {
+                throw new BadInputFormat(input.Text, input.Index);
+            }
+
+            return expression;
         }
 
         private IExpression? TryParseAdditionAndSubtraction(InputReader input)
         {
             var left = TryParseMultiplication(input);
 
+            if (left is null)
+            {
+                throw new BadInputFormat(input.Text, input.Index);
+            }
+
             while (input.NextIs('+', '-'))
             {
                 var c = input.Next();
                 var right = TryParseMultiplication(input);
+
+                if (right is null)
+                {
+                    throw new BadInputFormat(input.Text, input.Index);
+                }
 
                 if (c == '+')
                 {
@@ -37,10 +60,20 @@ namespace TextCalculator.Parsing
         {
             var left = TryParseNumberLiteral(input);
 
+            if (left is null)
+            {
+                throw new BadInputFormat(input.Text, input.Index);
+            }
+
             while (input.NextIs('*', '/'))
             {
                 var c = input.Next();
                 var right = TryParseNumberLiteral(input);
+
+                if (right is null)
+                {
+                    throw new BadInputFormat(input.Text, input.Index);
+                }
 
                 if (c == '*')
                 {
@@ -66,6 +99,11 @@ namespace TextCalculator.Parsing
             {
                 token += input.TakeIf('.');
                 token += input.TakeWhile(char.IsDigit);
+            }
+
+            if (token == "+" || token == "-")
+            {
+                throw new BadInputFormat(input.Text, input.Index);
             }
 
             if (!string.IsNullOrEmpty(token))
