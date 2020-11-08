@@ -19,27 +19,28 @@ namespace TextCalculator.Parsing
 
         public IExpression? Parse(InputReader input)
         {
-            var left = _next.Parse(input);
-
-            if (left is null)
-            {
-                throw new BadInputFormat(input.Text, input.Index);
-            }
+            var left = ParseNextExpression(input);
 
             while (input.NextIs(_supportedOperators.Keys.ToArray()))
             {
                 var symbol = input.Next();
-                var right = _next.Parse(input);
-
-                if (right is null)
-                {
-                    throw new BadInputFormat(input.Text, input.Index);
-                }
-
+                var right = ParseNextExpression(input);
                 left = _supportedOperators[symbol]?.Invoke(left, right);
             }
 
             return left;
+        }
+
+        private IExpression ParseNextExpression(InputReader input)
+        {
+            var expression = _next.Parse(input);
+
+            if (expression is null)
+            {
+                throw new BadInputFormat(input.Text, input.Index);
+            }
+
+            return expression;
         }
     }
 }
