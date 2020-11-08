@@ -37,11 +37,19 @@ namespace TextCalculator.Parsing
         {
             var left = TryParseNumberLiteral(input);
 
-            while (input.NextIs('*'))
+            while (input.NextIs('*', '/'))
             {
-                input.Next();
+                var c = input.Next();
                 var right = TryParseNumberLiteral(input);
-                left = new MultiplicationOperator(left, right);
+
+                if (c == '*')
+                {
+                    left = new MultiplicationOperator(left, right);
+                }
+                else
+                {
+                    left = new DivisionOperator(left, right);
+                }
             }
 
             return left;
