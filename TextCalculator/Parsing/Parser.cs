@@ -8,18 +8,26 @@ namespace TextCalculator.Parsing
         public IExpression? Parse(string inputText)
         {
             var input = new InputReader(inputText);
-            return TryParseAddition(input);
+            return TryParseAdditionAndSubtraction(input);
         }
 
-        private IExpression? TryParseAddition(InputReader input)
+        private IExpression? TryParseAdditionAndSubtraction(InputReader input)
         {
             var left = TryParseNumberLiteral(input);
 
-            while (input.NextIs('+'))
+            while (input.NextIs('+', '-'))
             {
-                input.Next();
+                var c = input.Next();
                 var right = TryParseNumberLiteral(input);
-                left = new AdditionOperator(left, right);
+
+                if (c == '+')
+                {
+                    left = new AdditionOperator(left, right);
+                }
+                else
+                {
+                    left = new SubtractionOperator(left, right);
+                }
             }
 
             return left;
