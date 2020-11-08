@@ -13,12 +13,12 @@ namespace TextCalculator.Parsing
 
         private IExpression? TryParseAdditionAndSubtraction(InputReader input)
         {
-            var left = TryParseNumberLiteral(input);
+            var left = TryParseMultiplication(input);
 
             while (input.NextIs('+', '-'))
             {
                 var c = input.Next();
-                var right = TryParseNumberLiteral(input);
+                var right = TryParseMultiplication(input);
 
                 if (c == '+')
                 {
@@ -28,6 +28,20 @@ namespace TextCalculator.Parsing
                 {
                     left = new SubtractionOperator(left, right);
                 }
+            }
+
+            return left;
+        }
+
+        private IExpression? TryParseMultiplication(InputReader input)
+        {
+            var left = TryParseNumberLiteral(input);
+
+            while (input.NextIs('*'))
+            {
+                input.Next();
+                var right = TryParseNumberLiteral(input);
+                left = new MultiplicationOperator(left, right);
             }
 
             return left;
