@@ -20,7 +20,11 @@ namespace TextCalculator.Parsing
                         { '/', (l, r) => new DivisionOperator(l, r) },
                         { '%', (l, r) => new ModulusOperator(l, r) }
                     },
-                    new NumberLiteralParser()));
+                    new BinaryOperatorParser(new Dictionary<char, BinaryOperatorFactory>
+                        {
+                            { '^', (l, r) => new PowerOperator(l, r) },
+                        },
+                        new NumberLiteralParser())));
         }
 
         public IExpression? Parse(string inputText)
