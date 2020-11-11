@@ -17,7 +17,8 @@ namespace TextCalculator.Parsing
                 new BinaryOperatorParser(new Dictionary<char, BinaryOperatorFactory>
                     {
                         { '*', (l, r) => new MultiplicationOperator(l, r) },
-                        { '/', (l, r) => new DivisionOperator(l, r) }
+                        { '/', (l, r) => new DivisionOperator(l, r) },
+                        { '%', (l, r) => new ModulusOperator(l, r) }
                     },
                     new NumberLiteralParser()));
         }
