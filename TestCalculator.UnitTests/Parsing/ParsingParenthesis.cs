@@ -22,7 +22,7 @@ namespace TextCalculator.UnitTests.Parsing
         void ShouldReturnBinaryOperatorIfIsOnlyTokenInsideParenthesis()
         {
             var input = "(1 + 1)";
-            
+
             var parser = new Parser();
 
             var expression = parser.Parse(input);
@@ -34,7 +34,7 @@ namespace TextCalculator.UnitTests.Parsing
         void ShouldEvaluateParenthesisFirst()
         {
             var input = "1 * (2 * 3 + 4) + 5";
-            
+
             var parser = new Parser();
 
             var expression = parser.Parse(input);

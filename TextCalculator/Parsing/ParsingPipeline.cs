@@ -9,7 +9,7 @@ namespace TextCalculator.Parsing
         {
             // Declare in order of preceedence
             var numberLiteralParser = new NumberLiteralParser();
-            var parenthesisParser = new ParenthesisParser(numberLiteralParser);
+            var parenthesisParser = GetParenthesisParser(numberLiteralParser);
             var powerParser = GetPowerParser(parenthesisParser);
             var multiplyAndDivideParser = GetMultiplyAndDivideParser(powerParser);
             var addAndSubtractParser = GetAddAndSubtractParser(multiplyAndDivideParser);
@@ -17,6 +17,11 @@ namespace TextCalculator.Parsing
             parenthesisParser.Start = addAndSubtractParser;
 
             return addAndSubtractParser;
+        }
+
+        private static GroupingParser GetParenthesisParser(IParser next)
+        {
+            return new GroupingParser('(', ')', x => x, next);
         }
 
         private static BinaryOperatorParser GetPowerParser(IParser next)
