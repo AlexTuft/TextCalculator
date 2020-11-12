@@ -12,6 +12,8 @@ namespace TextCalculator.UnitTests.Expressions
         [InlineData("32 * -45", -1440)]
         [InlineData(" -12 + 45 - 3", 30)]
         [InlineData("-3 + 100 / 4", 22)]
+        [InlineData("(-3 + 100) / 4", 24.25)]
+        [InlineData("|-3 - 100| / 4", 25.75)]
         void RunCase(string input, double expectedOutput)
         {
             var parser = new Parser();
