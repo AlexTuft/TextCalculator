@@ -7,8 +7,13 @@ namespace TextCalculator.UnitTests.Parsing
     {
         internal static void ShouldBeNumberLiteral(this object? o, double value)
         {
-            o.Should().BeOfType<NumberLiteral>();
-            o.As<NumberLiteral>().Result.Should().Be(value);
+            o.ShouldBeExpression<NumberLiteral>(value);
+        }
+        
+        internal static void ShouldBeExpression<TExpression>(this object? o, double value) where TExpression : IExpression
+        {
+            o.Should().BeOfType<TExpression>();
+            o.As<TExpression>().Result.Should().Be(value);
         }
 
         internal static void ShouldBeBinaryOperator<TOperator>(this object? o, IExpression left, IExpression right) where TOperator : IBinaryOperator
