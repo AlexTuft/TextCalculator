@@ -9,9 +9,12 @@ namespace TextCalculator.Parsing
         {
             // Declare in order of preceedence
             var numberLiteralParser = new NumberLiteralParser();
-            var powerParser = GetPowerParser(numberLiteralParser);
+            var parenthesisParser = new ParenthesisParser(numberLiteralParser);
+            var powerParser = GetPowerParser(parenthesisParser);
             var multiplyAndDivideParser = GetMultiplyAndDivideParser(powerParser);
             var addAndSubtractParser = GetAddAndSubtractParser(multiplyAndDivideParser);
+
+            parenthesisParser.Start = addAndSubtractParser;
 
             return addAndSubtractParser;
         }
