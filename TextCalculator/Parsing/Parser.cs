@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TextCalculator.Expressions;
 
 namespace TextCalculator.Parsing
@@ -9,17 +8,7 @@ namespace TextCalculator.Parsing
 
         public Parser()
         {
-            _parser = new BinaryOperatorParser(new Dictionary<char, BinaryOperatorFactory>
-                {
-                    { '+', (l, r) => new AdditionOperator(l, r) },
-                    { '-', (l, r) => new SubtractionOperator(l, r) }
-                },
-                new BinaryOperatorParser(new Dictionary<char, BinaryOperatorFactory>
-                    {
-                        { '*', (l, r) => new MultiplicationOperator(l, r) },
-                        { '/', (l, r) => new DivisionOperator(l, r) }
-                    },
-                    new NumberLiteralParser()));
+            _parser = ParsingPipeline.Create();
         }
 
         public IExpression? Parse(string inputText)
