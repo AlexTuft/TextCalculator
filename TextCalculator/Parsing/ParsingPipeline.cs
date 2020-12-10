@@ -12,7 +12,8 @@ namespace TextCalculator.Parsing
             var parenthesisParser = GetParenthesisParser(numberLiteralParser);
             var absoluteValueParser = GetAbsoluteValueParser(parenthesisParser);
             var powerParser = GetPowerParser(absoluteValueParser);
-            var multiplyAndDivideParser = GetMultiplyAndDivideParser(powerParser);
+            var implicitMultiplicationParser = GetImplicitMultiplicationParser(powerParser);
+            var multiplyAndDivideParser = GetMultiplyAndDivideParser(implicitMultiplicationParser);
             var addAndSubtractParser = GetAddAndSubtractParser(multiplyAndDivideParser);
 
             parenthesisParser.Start = addAndSubtractParser;
@@ -34,10 +35,15 @@ namespace TextCalculator.Parsing
         private static BinaryOperatorParser GetPowerParser(IParser next)
         {
             return new BinaryOperatorParser(new Dictionary<char, BinaryOperatorFactory>
-                    {
-                        { '^', (l, r) => new PowerOperator(l, r) },
-                    },
-                                    next);
+                {
+                    { '^', (l, r) => new PowerOperator(l, r) },
+                },
+                next);
+        }
+
+        private static ImplicitMultiplicationParser GetImplicitMultiplicationParser(IParser next)
+        {
+            return new ImplicitMultiplicationParser(next);
         }
 
         private static BinaryOperatorParser GetMultiplyAndDivideParser(IParser next)
