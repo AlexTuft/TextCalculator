@@ -7,13 +7,28 @@ namespace TextCalculator.Parsing
     {
         internal static IParser Create()
         {
-            // Declare in order of preceedence
+            // Declare in order of preceedence, except for parenthesis and absolute value, where order doesn't matter.
             var numberLiteralParser = new NumberLiteralParser();
-            var powerParser = GetPowerParser(numberLiteralParser);
+            var parenthesisParser = GetParenthesisParser(numberLiteralParser);
+            var absoluteValueParser = GetAbsoluteValueParser(parenthesisParser);
+            var powerParser = GetPowerParser(absoluteValueParser);
             var multiplyAndDivideParser = GetMultiplyAndDivideParser(powerParser);
             var addAndSubtractParser = GetAddAndSubtractParser(multiplyAndDivideParser);
 
+            parenthesisParser.Start = addAndSubtractParser;
+            absoluteValueParser.Start = addAndSubtractParser;
+
             return addAndSubtractParser;
+        }
+
+        private static GroupingParser GetParenthesisParser(IParser next)
+        {
+            return new GroupingParser('(', ')', x => x, next);
+        }
+
+        private static GroupingParser GetAbsoluteValueParser(IParser next)
+        {
+            return new GroupingParser('|', '|', x => new AbsoluteValue(x), next);
         }
 
         private static BinaryOperatorParser GetPowerParser(IParser next)
