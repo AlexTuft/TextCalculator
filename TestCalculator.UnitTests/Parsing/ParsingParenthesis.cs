@@ -1,54 +1,28 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingParenthesis
     {
-        [Fact]
-        void ShouldReturnNumberLiteralIfIsOnlyTokenInsideParenthesis()
+        [Theory]
+        [InlineData("(1)", "num{1}")]
+        void ShouldReturnNumberLiteralIfIsOnlyTokenInsideParenthesis(string input, string output)
         {
-            var input = "(1)";
-
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeNumberLiteral(1);
+            ParserTest.RunCase(input, output);
         }
 
-        [Fact]
-        void ShouldReturnBinaryOperatorIfIsOnlyTokenInsideParenthesis()
+        [Theory]
+        [InlineData("(1 + 1)", "add(num{1},num{1})")]
+        void ShouldReturnBinaryOperatorIfIsOnlyTokenInsideParenthesis(string input, string output)
         {
-            var input = "(1 + 1)";
-
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(new NumberLiteral(1), new NumberLiteral(1));
+            ParserTest.RunCase(input, output);
         }
 
-        [Fact]
-        void ShouldEvaluateParenthesisFirst()
+        [Theory]
+        [InlineData("1 * (2 * 3 + 4) + 5", "add(mul(num{1},add(mul(num{2},num{3}),num{4})),num{5})")]
+        void ShouldEvaluateParenthesisFirst(string input, string output)
         {
-            var input = "1 * (2 * 3 + 4) + 5";
-
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(
-                new MultiplicationOperator(
-                    new NumberLiteral(1),
-                    new AdditionOperator(
-                        new MultiplicationOperator(
-                            new NumberLiteral(2),
-                            new NumberLiteral(3)),
-                        new NumberLiteral(4))
-                ),
-                new NumberLiteral(5));
+            ParserTest.RunCase(input, output);
         }
     }
 }

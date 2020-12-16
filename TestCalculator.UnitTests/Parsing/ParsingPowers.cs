@@ -1,80 +1,42 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingPowers
     {
         [Theory]
-        [InlineData("1 ^ 2")]
-        void ShouldReturnPowerOperator(string input)
+        [InlineData("1 ^ 2", "pow(num{1},num{2})")]
+        void ShouldReturnPowerOperator(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<PowerOperator>(new NumberLiteral(1), new NumberLiteral(2));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 ^ 2 ^ 3")]
-        void ShouldHandlePowersMultiplications(string input)
+        [InlineData("1 ^ 2 ^ 3", "pow(pow(num{1},num{2}),num{3})")]
+        void ShouldHandlePowersMultiplications(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<PowerOperator>(
-                new PowerOperator(
-                    new NumberLiteral(1),
-                    new NumberLiteral(2)),
-                new NumberLiteral(3));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 * 2 ^ 3")]
-        void ShouldShouldPrecedeMultiplication(string input)
+        [InlineData("1 * 2 ^ 3", "mul(num{1},pow(num{2},num{3}))")]
+        void ShouldShouldPrecedeMultiplication(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<MultiplicationOperator>(
-                new NumberLiteral(1),
-                new PowerOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 / 2 ^ 3")]
-        void ShouldShouldPrecedeDivision(string input)
+        [InlineData("1 / 2 ^ 3", "div(num{1},pow(num{2},num{3}))")]
+        void ShouldShouldPrecedeDivision(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<DivisionOperator>(
-                new NumberLiteral(1),
-                new PowerOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 % 2 ^ 3")]
-        void ShouldShouldPrecedeModulus(string input)
+        [InlineData("1 % 2 ^ 3", "mod(num{1},pow(num{2},num{3}))")]
+        void ShouldShouldPrecedeModulus(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<ModulusOperator>(
-                new NumberLiteral(1),
-                new PowerOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
     }
 }

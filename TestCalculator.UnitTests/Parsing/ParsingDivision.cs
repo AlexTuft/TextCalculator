@@ -1,65 +1,35 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingDivision
     {
         [Theory]
-        [InlineData("1 / 2")]
-        void ShouldReturnDivisionOperator(string input)
+        [InlineData("1 / 2", "div(num{1},num{2})")]
+        void ShouldReturnDivisionOperator(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<DivisionOperator>(new NumberLiteral(1), new NumberLiteral(2));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 / 2 / 3")]
-        void ShouldHandleMultipleDivisions(string input)
+        [InlineData("1 / 2 / 3", "div(div(num{1},num{2}),num{3})")]
+        void ShouldHandleMultipleDivisions(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<DivisionOperator>(
-                new DivisionOperator(
-                    new NumberLiteral(1),
-                    new NumberLiteral(2)),
-                new NumberLiteral(3));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 + 2 / 3")]
-        void ShouldShouldPrecedeAddition(string input)
+        [InlineData("1 + 2 / 3", "add(num{1},div(num{2},num{3}))")]
+        void ShouldShouldPrecedeAddition(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(
-                new NumberLiteral(1),
-                new DivisionOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 - 2 / 3")]
-        void ShouldShouldPrecedeSubtraction(string input)
+        [InlineData("1 - 2 / 3", "sub(num{1},div(num{2},num{3}))")]
+        void ShouldShouldPrecedeSubtraction(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<SubtractionOperator>(
-                new NumberLiteral(1),
-                new DivisionOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
     }
 }

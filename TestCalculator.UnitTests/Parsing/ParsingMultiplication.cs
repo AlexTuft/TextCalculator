@@ -1,65 +1,35 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingMultiplication
     {
         [Theory]
-        [InlineData("1 * 2")]
-        void ShouldReturnMultiplicationOperator(string input)
+        [InlineData("1 * 2", "mul(num{1},num{2})")]
+        void ShouldReturnMultiplicationOperator(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<MultiplicationOperator>(new NumberLiteral(1), new NumberLiteral(2));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 * 2 * 3")]
-        void ShouldHandleMultipleMultiplications(string input)
+        [InlineData("1 * 2 * 3", "mul(mul(num{1},num{2}),num{3})")]
+        void ShouldHandleMultipleMultiplications(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<MultiplicationOperator>(
-                new MultiplicationOperator(
-                    new NumberLiteral(1),
-                    new NumberLiteral(2)),
-                new NumberLiteral(3));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 + 2 * 3")]
-        void ShouldShouldPrecedeAddition(string input)
+        [InlineData("1 + 2 * 3", "add(num{1},mul(num{2},num{3}))")]
+        void ShouldShouldPrecedeAddition(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(
-                new NumberLiteral(1),
-                new MultiplicationOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 - 2 * 3")]
-        void ShouldShouldPrecedeSubtraction(string input)
+        [InlineData("1 - 2 * 3", "sub(num{1},mul(num{2},num{3}))")]
+        void ShouldShouldPrecedeSubtraction(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<SubtractionOperator>(
-                new NumberLiteral(1),
-                new MultiplicationOperator(
-                    new NumberLiteral(2),
-                    new NumberLiteral(3)));
+            ParserTest.RunCase(input, output);
         }
     }
 }

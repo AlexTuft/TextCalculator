@@ -1,22 +1,16 @@
-﻿using FluentAssertions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingEmptyInput
     {
         [Theory]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("    ")]
-        void ShouldReturnNull(string input)
+        [InlineData("", null)]
+        [InlineData(" ", null)]
+        [InlineData("    ", null)]
+        void ShouldReturnNull(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.Should().BeNull();
+            ParserTest.RunCase(input, output);
         }
     }
 }

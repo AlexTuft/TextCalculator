@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TextCalculator.Expressions
 {
@@ -14,5 +12,7 @@ namespace TextCalculator.Expressions
         }
 
         public double Result => Math.Abs(_expression.Result);
+
+        public IExpression InnerExpression => _expression;
     }
 }

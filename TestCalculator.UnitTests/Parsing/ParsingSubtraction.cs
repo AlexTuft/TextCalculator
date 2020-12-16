@@ -1,35 +1,21 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingSubtraction
     {
         [Theory]
-        [InlineData("1 - 2")]
-        void ShouldReturnSubtractionOperator(string input)
+        [InlineData("1 - 2", "sub(num{1},num{2})")]
+        void ShouldReturnSubtractionOperator(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<SubtractionOperator>(new NumberLiteral(1), new NumberLiteral(2));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 - 2 - 3")]
-        void ShouldHandleMultipleSubtractions(string input)
+        [InlineData("1 - 2 - 3", "sub(sub(num{1},num{2}),num{3})")]
+        void ShouldHandleMultipleSubtractions(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<SubtractionOperator>(
-                new SubtractionOperator(
-                    new NumberLiteral(1),
-                    new NumberLiteral(2)),
-                new NumberLiteral(3));
+            ParserTest.RunCase(input, output);
         }
     }
 }

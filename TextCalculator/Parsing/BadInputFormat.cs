@@ -6,7 +6,10 @@ namespace TextCalculator.Parsing
     {
         public BadInputFormat(string input, int index) : base(CreateMessage(input, index))
         {
+            ErrorIndex = index;
         }
+
+        public int ErrorIndex { get; }
 
         private static string CreateMessage(string input, int index)
         {

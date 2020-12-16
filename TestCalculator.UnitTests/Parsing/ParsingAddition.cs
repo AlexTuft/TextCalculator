@@ -1,35 +1,21 @@
-﻿using TextCalculator.Expressions;
-using TextCalculator.Parsing;
-using Xunit;
+﻿using Xunit;
 
 namespace TextCalculator.UnitTests.Parsing
 {
     public class ParsingAddition : FixtureBase
     {
         [Theory]
-        [InlineData("1 + 2")]
-        void ShouldReturnAdditionOperator(string input)
+        [InlineData("1 + 2", "add(num{1},num{2})")]
+        void ShouldReturnExpectedValue(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(new NumberLiteral(1), new NumberLiteral(2));
+            ParserTest.RunCase(input, output);
         }
 
         [Theory]
-        [InlineData("1 + 2 + 3")]
-        void ShouldHandleMultipleAdditions(string input)
+        [InlineData("1 + 2 + 3", "add(add(num{1},num{2}),num{3})")]
+        void ShouldHandleMultipleAdditions(string input, string output)
         {
-            var parser = new Parser();
-
-            var expression = parser.Parse(input);
-
-            expression.ShouldBeBinaryOperator<AdditionOperator>(
-                new AdditionOperator(
-                    new NumberLiteral(1),
-                    new NumberLiteral(2)),
-                new NumberLiteral(3));
+            ParserTest.RunCase(input, output);
         }
     }
 }
